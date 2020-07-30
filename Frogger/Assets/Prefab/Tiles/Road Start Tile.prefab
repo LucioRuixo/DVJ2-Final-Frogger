@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 1609224772964162662}
   - component: {fileID: 2583681214189403477}
   m_Layer: 0
-  m_Name: Road Side 1 Tile
+  m_Name: Road Start Tile
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -59,7 +59,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 13a6643d1b8440a479554346f909a211, type: 2}
+  - {fileID: 2100000, guid: e01bcdf0e6cdc434694bb75f3c0d83c4, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
