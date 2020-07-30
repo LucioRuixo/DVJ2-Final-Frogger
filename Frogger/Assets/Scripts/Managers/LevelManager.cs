@@ -3,6 +3,12 @@ using UnityEngine;
 
 public class LevelManager : MonoBehaviour
 {
+    public enum DangerZoneTypes
+    {
+        Road,
+        Water
+    }
+
     int totalZoneAmount;
 
     float tileOffset = 0.5f;
@@ -10,8 +16,9 @@ public class LevelManager : MonoBehaviour
     float initialZoneZ;
 
     public GameObject safeZonePrefab;
+    public GameObject waterZoneTriggerPrefab;
 
-    public List<GameObject> dangerZonePrefabs;
+    public List<DangerZoneSO> dangerZoneSOs;
 
     [Header("Level settings")]
     public int levelWidth;
@@ -62,12 +69,20 @@ public class LevelManager : MonoBehaviour
             }
             else
             {
-                GameObject prefab = dangerZonePrefabs[Random.Range(0, dangerZonePrefabs.Count)];
-
                 zoneLength = Random.Range(minDangerZoneLength, maxDangerZoneLength + 1);
 
-                DangerZone newZone = Instantiate(prefab, transform).GetComponent<DangerZone>();
-                if (newZone) newZone.Initialize(initialZoneX, initialZoneZ + currentTotalLength, levelWidth, zoneLength);
+                DangerZoneSO newZoneSO = dangerZoneSOs[Random.Range(0, dangerZoneSOs.Count)];
+                DangerZone newZone = Instantiate(newZoneSO.prefab, transform).GetComponent<DangerZone>();
+                if (newZone)
+                {
+                    newZone.Initialize(initialZoneX, initialZoneZ + currentTotalLength, levelWidth, zoneLength);
+                    newZone.SetType(newZoneSO.type);
+                    newZone.SetObstacleValues(newZoneSO.minObstacleGenerationTime, newZoneSO.maxObstacleGenerationTime, newZoneSO.minObstacleSpeed, newZoneSO.maxObstacleSpeed);
+                    newZone.SetListElements(newZoneSO.tilePrefabs, newZoneSO.obstaclePrefabs);
+
+                    if (newZoneSO.type == DangerZoneTypes.Water)
+                        newZone.SetWaterZoneTriggerPrefab(waterZoneTriggerPrefab);
+                }
             }
 
             currentTotalLength += zoneLength;

@@ -1,0 +1,45 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e6c7b4fdece3ceb41894233e136f8a82, type: 3}
+  m_Name: Road Zone
+  m_EditorClassIdentifier: 
+  minObstacleGenerationTime: 1.5
+  maxObstacleGenerationTime: 4
+  minObstacleSpeed: 3
+  maxObstacleSpeed: 6
+  type: 0
+  prefab: {fileID: 2263890039299480579, guid: 5eaebd3b838b43b4db8f5b03cbe036c9, type: 3}
+  tilePrefabs:
+  - {fileID: 8231541183138757455, guid: 1206945d80ee89c4f845dec518c092dd, type: 3}
+  - {fileID: 4702165447153232446, guid: 973ddf052a70e3347b07a7ef6e765dd6, type: 3}
+  - {fileID: 4852214600386857375, guid: f0cf927534177ea48afaf77c07d11a4f, type: 3}
+  obstaclePrefabs:
+  - {fileID: 8898914557307689163, guid: 4f005e6b8a444dc4494db211913c4b96, type: 3}
+  - {fileID: 6524905002167214200, guid: add7873a29df6da46abc2ba65a051c86, type: 3}
+  - {fileID: 5087228770987431438, guid: 42d0d94bfb3fb3f4aa0c4cff63234e6f, type: 3}
+  - {fileID: 1126266332690345027, guid: 39538e10ebe9ec746830d3ab32aec4c1, type: 3}
+  - {fileID: 765315625031866674, guid: fc472a36ff46fd2459e914b4e5be9377, type: 3}
+  - {fileID: 3557991359334723712, guid: e7d1582b5177395499af4f0c5d71fe9b, type: 3}
+  - {fileID: 4595702968308922855, guid: c1ce7fda2c4f3124b9cab2138747beb6, type: 3}
+  - {fileID: 5859833196080924199, guid: a653dacce84823443a1e851cd1a31529, type: 3}
+  - {fileID: 1121744934160515602, guid: 00be061c9007e944f8ad59eed87d3a1a, type: 3}
+  - {fileID: 8575658017858637646, guid: f39e8fedc9da7514e9b28a3dd138dbdb, type: 3}
+  - {fileID: 4102319171679253131, guid: 40f3e3eb9b931954380569557505e66e, type: 3}
+  - {fileID: 5323891053375910602, guid: 25d2e8c23ea2350429070e46dee4084d, type: 3}
+  - {fileID: 3426300441198392754, guid: d13962bf8a0a84e439a5412afe76b330, type: 3}
+  - {fileID: 2267833519196534237, guid: 615963726ee9ab24087183b361e7abe3, type: 3}
+  - {fileID: 5307430211356609686, guid: 2b2e248ee4713d84f88933ad3d2beb51, type: 3}
+  - {fileID: 559469489123190080, guid: cdb797bd09e6807489e7c966cf9dc050, type: 3}
+  - {fileID: 6299292796926480275, guid: 2a5591d4727738b4ba9dfc564cfd7e41, type: 3}
+  - {fileID: 7034746798945452915, guid: 2f6d7cb7376d7c34ea0dff8bb8c13d8e, type: 3}
+  - {fileID: 8534035348614200924, guid: ae18e997dfd75114fac9ebed284856fa, type: 3}
+  - {fileID: 5429161103013937697, guid: c5118c16af35b7647af1ffb8280d7e29, type: 3}

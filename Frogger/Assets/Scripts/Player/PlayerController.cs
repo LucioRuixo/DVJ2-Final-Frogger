@@ -6,6 +6,13 @@ public class PlayerController : MonoBehaviour
     public PlayerModel model;
 
     bool moving = false;
+    bool onWaterZone = false;
+
+    void OnTriggerEnter(Collider other)
+    {
+        if (other.tag == "Water Zone Trigger")
+            onWaterZone = !onWaterZone;
+    }
 
     void Update()
     {
