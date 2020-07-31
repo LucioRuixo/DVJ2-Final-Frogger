@@ -36,4 +36,9 @@ public class Obstacle : MonoBehaviour
         this.speed = speed;
         this.maxX = maxX;
     }
+
+    public Vector3 GetMovement()
+    {
+        return movement;
+    }
 }

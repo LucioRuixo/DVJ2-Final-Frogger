@@ -38,7 +38,7 @@ public class DangerZone : Zone
     {
         GameObject newTrigger = Instantiate(waterZoneTriggerPrefab, transform);
         Vector3 size = newTrigger.GetComponent<BoxCollider>().size;
-        size.x = (float)width;
+        size.x = width;
         newTrigger.GetComponent<BoxCollider>().size = size;
         Vector3 position = newTrigger.transform.position;
         position.z = initialZ;
@@ -46,7 +46,7 @@ public class DangerZone : Zone
 
         newTrigger = Instantiate(waterZoneTriggerPrefab, transform);
         size = newTrigger.GetComponent<BoxCollider>().size;
-        size.x = (float)width;
+        size.x = width;
         newTrigger.GetComponent<BoxCollider>().size = size;
         position = newTrigger.transform.position;
         position.z = initialZ + length - 1f;

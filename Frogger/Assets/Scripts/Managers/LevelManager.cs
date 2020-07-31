@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class LevelManager : MonoBehaviour
@@ -9,6 +10,7 @@ public class LevelManager : MonoBehaviour
         Water
     }
 
+    int currentLevel = 1;
     int totalZoneAmount;
 
     float tileOffset = 0.5f;
@@ -17,6 +19,7 @@ public class LevelManager : MonoBehaviour
 
     public GameObject safeZonePrefab;
     public GameObject waterZoneTriggerPrefab;
+    public GameObject levelEndTriggerPrefab;
 
     public List<DangerZoneSO> dangerZoneSOs;
 
@@ -27,6 +30,10 @@ public class LevelManager : MonoBehaviour
     public int maxSafeZoneLength;
     public int minDangerZoneLength;
     public int maxDangerZoneLength;
+
+    public static event Action onLevelEndReached;
+    public static event Action onNewLevelGeneration;
+    public static event Action onLastLevelCompleted;
 
     void Start()
     {
@@ -55,23 +62,22 @@ public class LevelManager : MonoBehaviour
     void Generate()
     {
         int currentTotalLength = 0;
+        int zoneLength = 0;
 
         for (int i = 0; i < totalZoneAmount; i++)
         {
-            int zoneLength;
-
             if (i % 2 == 0)
             {
-                zoneLength = Random.Range(minSafeZoneLength, maxSafeZoneLength + 1);
+                zoneLength = UnityEngine.Random.Range(minSafeZoneLength, maxSafeZoneLength + 1);
 
                 SafeZone newZone = Instantiate(safeZonePrefab, transform).GetComponent<SafeZone>();
                 if (newZone) newZone.Initialize(initialZoneX, initialZoneZ + currentTotalLength, levelWidth, zoneLength);
             }
             else
             {
-                zoneLength = Random.Range(minDangerZoneLength, maxDangerZoneLength + 1);
+                zoneLength = UnityEngine.Random.Range(minDangerZoneLength, maxDangerZoneLength + 1);
 
-                DangerZoneSO newZoneSO = dangerZoneSOs[Random.Range(0, dangerZoneSOs.Count)];
+                DangerZoneSO newZoneSO = dangerZoneSOs[UnityEngine.Random.Range(0, dangerZoneSOs.Count)];
                 DangerZone newZone = Instantiate(newZoneSO.prefab, transform).GetComponent<DangerZone>();
                 if (newZone)
                 {
@@ -87,5 +93,13 @@ public class LevelManager : MonoBehaviour
 
             currentTotalLength += zoneLength;
         }
+
+        GameObject levelEndTrigger = Instantiate(levelEndTriggerPrefab, transform);
+        Vector3 size = levelEndTrigger.GetComponent<BoxCollider>().size;
+        size.x = levelWidth;
+        levelEndTrigger.GetComponent<BoxCollider>().size = size;
+        Vector3 position = levelEndTrigger.transform.position;
+        position.z = currentTotalLength - zoneLength - 1f - tileOffset;
+        levelEndTrigger.transform.position = position;
     }
 }

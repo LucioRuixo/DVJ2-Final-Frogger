@@ -5,6 +5,9 @@ TagManager:
   serializedVersion: 2
   tags:
   - Water Zone Trigger
+  - Water Zone Obstacle
+  - Road Zone Obstacle
+  - Level End Trigger
   layers:
   - Default
   - TransparentFX

@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using UnityEngine;
 
 public class PlayerController : MonoBehaviour
@@ -8,21 +9,44 @@ public class PlayerController : MonoBehaviour
     bool moving = false;
     bool onWaterZone = false;
 
+    Vector3 passiveMovement;
+
+    public static event Action<int> onDeath;
+
     void OnTriggerEnter(Collider other)
     {
         if (other.tag == "Water Zone Trigger")
             onWaterZone = !onWaterZone;
+        else if (other.tag == "Water Zone Obstacle")
+            passiveMovement = other.GetComponent<Obstacle>().GetMovement();
+        else if (other.tag == "Road Zone Obstacle")
+            Die();
+    }
+
+    void OnTriggerExit(Collider other)
+    {
+        if (other.tag == "Water Zone Obstacle")
+            passiveMovement = Vector3.zero;
     }
 
     void Update()
     {
         if (!moving)
         {
-            if (Input.GetButtonDown("Vertical"))
+            if (Input.GetButton("Vertical"))
                 StartCoroutine(Move(transform.position, transform.forward * Input.GetAxisRaw("Vertical")));
-            else if (Input.GetButtonDown("Horizontal"))
+            else if (Input.GetButton("Horizontal"))
                 StartCoroutine(Move(transform.position, transform.right * Input.GetAxisRaw("Horizontal")));
+
+            if (passiveMovement != Vector3.zero)
+                transform.position += passiveMovement * Time.deltaTime;
         }
+    }
+
+    void Die()
+    {
+        if (onDeath != null)
+            onDeath(model.score);
     }
 
     IEnumerator Move(Vector3 initialPosition, Vector3 direction)
@@ -45,5 +69,8 @@ public class PlayerController : MonoBehaviour
         }
 
         moving = false;
+
+        if (onWaterZone && passiveMovement == Vector3.zero)
+            Die();
     }
 }
