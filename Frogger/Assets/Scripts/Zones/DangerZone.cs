@@ -23,7 +23,7 @@ public class DangerZone : Zone
         Generate(true, tilePrefabs);
 
         if (type == LevelManager.DangerZoneTypes.Water)
-            GenerateWaterZoneTriggers();
+            SetWaterZoneTriggers();
 
         bool onLeft;
         for (int i = 0; i < length - 1; i++)
@@ -34,7 +34,7 @@ public class DangerZone : Zone
         }
     }
 
-    void GenerateWaterZoneTriggers()
+    void SetWaterZoneTriggers()
     {
         GameObject newTrigger = Instantiate(waterZoneTriggerPrefab, transform);
         Vector3 size = newTrigger.GetComponent<BoxCollider>().size;

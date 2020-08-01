@@ -3,6 +3,7 @@ using UnityEngine;
 
 public class PlayerModel : MonoBehaviour
 {
+    public int scoreIncrement;
     [HideInInspector] public int score;
 
     public float movementSpeed;
@@ -13,15 +14,13 @@ public class PlayerModel : MonoBehaviour
     {
         score = 0;
 
-        if (onScoreUpdate != null)
-            onScoreUpdate(score);
+        if (onScoreUpdate != null) onScoreUpdate(score);
     }
 
-    void UpdateScore(int value)
+    public void IncreaseScore()
     {
-        score += value;
+        score += scoreIncrement;
 
-        if (onScoreUpdate != null)
-            onScoreUpdate(score);
+        if (onScoreUpdate != null) onScoreUpdate(score);
     }
 }

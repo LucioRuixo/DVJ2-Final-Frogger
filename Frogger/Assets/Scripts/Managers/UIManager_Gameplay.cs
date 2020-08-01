@@ -5,6 +5,7 @@ using UnityEngine.SceneManagement;
 
 public class UIManager_Gameplay : MonoBehaviour
 {
+    public TextMeshProUGUI levelText;
     public TextMeshProUGUI scoreText;
     public GameObject pauseScreen;
     public GameObject endOfLevelScreen;
@@ -12,27 +13,32 @@ public class UIManager_Gameplay : MonoBehaviour
     public TextMeshProUGUI deathText;
     public TextMeshProUGUI finalScoreText;
 
-    public static event Action onResumeButtonPressed;
+    public static event Action onPauseScreenToggle;
     public static event Action onNextLevelButtonPressed;
 
     void OnEnable()
     {
-        GameManager.onPauseToggle += ActivatePauseScreen;
+        GameManager.onPauseToggle += TogglePauseScreen;
         GameManager.onGameEnd += ActivateDeathScreen;
-
-        LevelManager.onLevelEndReached += ActivateEndOfLevelScreen;
-
+        LevelManager.onCurrentLevelUpdate += UpdateLevel;
         PlayerModel.onScoreUpdate += UpdateScore;
+        PlayerController.onLevelEndReached += ActivateEndOfLevelScreen;
     }
 
     void OnDisable()
     {
-        GameManager.onPauseToggle -= ActivatePauseScreen;
+        GameManager.onPauseToggle -= TogglePauseScreen;
         GameManager.onGameEnd -= ActivateDeathScreen;
-
-        LevelManager.onLevelEndReached -= ActivateEndOfLevelScreen;
-
+        LevelManager.onCurrentLevelUpdate -= UpdateLevel;
         PlayerModel.onScoreUpdate -= UpdateScore;
+        PlayerController.onLevelEndReached -= ActivateEndOfLevelScreen;
+    }
+
+    void TogglePauseScreen(bool state)
+    {
+        pauseScreen.SetActive(state);
+
+        //SoundManager.Get().PlaySound(SoundManager.Sounds.Button);
     }
 
     void UpdateScore(int score)
@@ -40,9 +46,9 @@ public class UIManager_Gameplay : MonoBehaviour
         scoreText.text = "SCORE: " + score;
     }
 
-    void ActivatePauseScreen(bool state)
+    void UpdateLevel(int level)
     {
-        pauseScreen.SetActive(state);
+        levelText.text = "LEVEL: " + level;
     }
 
     void ActivateEndOfLevelScreen()
@@ -58,12 +64,9 @@ public class UIManager_Gameplay : MonoBehaviour
         deathScreen.SetActive(true);
     }
 
-    public void UnpauseGame()
+    public void TogglePause()
     {
-        if (onResumeButtonPressed != null)
-            onResumeButtonPressed();
-
-        //SoundManager.Get().PlaySound(SoundManager.Sounds.Button);
+        if (onPauseScreenToggle != null) onPauseScreenToggle();
     }
 
     public void ReturnToMainMenu()
@@ -77,8 +80,7 @@ public class UIManager_Gameplay : MonoBehaviour
     {
         endOfLevelScreen.SetActive(false);
 
-        if (onNextLevelButtonPressed != null)
-            onNextLevelButtonPressed();
+        if (onNextLevelButtonPressed != null) onNextLevelButtonPressed();
 
         //SoundManager.Get().PlaySound(SoundManager.Sounds.Button);
     }

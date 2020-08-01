@@ -14,8 +14,7 @@ public class GameManager : MonoBehaviour
 
     void OnEnable()
     {
-        UIManager_Gameplay.onResumeButtonPressed += TogglePause;
-
+        UIManager_Gameplay.onPauseScreenToggle += TogglePause;
         PlayerController.onDeath += EndGame;
     }
 
@@ -31,8 +30,7 @@ public class GameManager : MonoBehaviour
 
     void OnDisable()
     {
-        UIManager_Gameplay.onResumeButtonPressed -= TogglePause;
-
+        UIManager_Gameplay.onPauseScreenToggle -= TogglePause;
         PlayerController.onDeath -= EndGame;
     }
 
@@ -41,13 +39,11 @@ public class GameManager : MonoBehaviour
         Time.timeScale = onPause ? 1f : 0f;
         onPause = !onPause;
 
-        if (onPauseToggle != null)
-            onPauseToggle(onPause);
+        if (onPauseToggle != null) onPauseToggle(onPause);
     }
 
     void EndGame(int score)
     {
-        if (onGameEnd != null)
-            onGameEnd(score);
+        if (onGameEnd != null) onGameEnd(score);
     }
 }

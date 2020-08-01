@@ -10,7 +10,7 @@ public class LevelManager : MonoBehaviour
         Water
     }
 
-    int currentLevel = 1;
+    int currentLevel = 0;
     int totalZoneAmount;
 
     float tileOffset = 0.5f;
@@ -22,22 +22,28 @@ public class LevelManager : MonoBehaviour
     public GameObject levelEndTriggerPrefab;
 
     public List<DangerZoneSO> dangerZoneSOs;
+    public List<GameObject> zones;
 
     [Header("Level settings")]
     public int levelWidth;
     public int dangerZoneAmount;
     public int minSafeZoneLength;
     public int maxSafeZoneLength;
-    public int minDangerZoneLength;
-    public int maxDangerZoneLength;
+    public int minBaseDangerZoneLength;
+    public int maxBaseDangerZoneLength;
 
     public static event Action onLevelEndReached;
     public static event Action onNewLevelGeneration;
-    public static event Action onLastLevelCompleted;
+    public static event Action<int> onCurrentLevelUpdate;
+
+    void OnEnable()
+    {
+        UIManager_Gameplay.onNextLevelButtonPressed += GenerateNewLevel;
+    }
 
     void Start()
     {
-        initialZoneX = ((float)(levelWidth / 2) - tileOffset) * -1f;
+        initialZoneX = (levelWidth / 2 - tileOffset) * -1f;
         initialZoneZ = -tileOffset;
 
         if (dangerZoneAmount < 1)
@@ -45,9 +51,16 @@ public class LevelManager : MonoBehaviour
         totalZoneAmount = dangerZoneAmount * 2 + 1;
 
         ClampZoneValues(minSafeZoneLength, maxSafeZoneLength);
-        ClampZoneValues(minDangerZoneLength, maxDangerZoneLength);
+        ClampZoneValues(minBaseDangerZoneLength, maxBaseDangerZoneLength);
 
         Generate();
+
+        onCurrentLevelUpdate(currentLevel + 1);
+    }
+
+    void OnDisable()
+    {
+        UIManager_Gameplay.onNextLevelButtonPressed -= GenerateNewLevel;
     }
 
     void ClampZoneValues(int minValue, int maxValue)
@@ -68,17 +81,19 @@ public class LevelManager : MonoBehaviour
         {
             if (i % 2 == 0)
             {
-                zoneLength = UnityEngine.Random.Range(minSafeZoneLength, maxSafeZoneLength + 1);
+                zoneLength = UnityEngine.Random.Range(minSafeZoneLength, maxSafeZoneLength + 1) + currentLevel;
 
-                SafeZone newZone = Instantiate(safeZonePrefab, transform).GetComponent<SafeZone>();
+                zones.Add(Instantiate(safeZonePrefab, transform));
+                SafeZone newZone = zones[zones.Count - 1].GetComponent<SafeZone>();
                 if (newZone) newZone.Initialize(initialZoneX, initialZoneZ + currentTotalLength, levelWidth, zoneLength);
             }
             else
             {
-                zoneLength = UnityEngine.Random.Range(minDangerZoneLength, maxDangerZoneLength + 1);
+                zoneLength = UnityEngine.Random.Range(minBaseDangerZoneLength, maxBaseDangerZoneLength + 1);
 
                 DangerZoneSO newZoneSO = dangerZoneSOs[UnityEngine.Random.Range(0, dangerZoneSOs.Count)];
-                DangerZone newZone = Instantiate(newZoneSO.prefab, transform).GetComponent<DangerZone>();
+                zones.Add(Instantiate(newZoneSO.prefab, transform));
+                DangerZone newZone = zones[zones.Count - 1].GetComponent<DangerZone>();
                 if (newZone)
                 {
                     newZone.Initialize(initialZoneX, initialZoneZ + currentTotalLength, levelWidth, zoneLength);
@@ -101,5 +116,25 @@ public class LevelManager : MonoBehaviour
         Vector3 position = levelEndTrigger.transform.position;
         position.z = currentTotalLength - zoneLength - 1f - tileOffset;
         levelEndTrigger.transform.position = position;
+    }
+
+    void GenerateNewLevel()
+    {
+        foreach (GameObject zone in zones)
+        {
+            Destroy(zone);
+        }
+
+        IncreaseCurrentLevel();
+        Generate();
+
+        if (onNewLevelGeneration != null) onNewLevelGeneration();
+    }
+
+    void IncreaseCurrentLevel()
+    {
+        currentLevel++;
+
+        if (onCurrentLevelUpdate != null) onCurrentLevelUpdate(currentLevel + 1);
     }
 }

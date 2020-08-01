@@ -12,6 +12,12 @@ public class PlayerController : MonoBehaviour
     Vector3 passiveMovement;
 
     public static event Action<int> onDeath;
+    public static event Action onLevelEndReached;
+
+    void OnEnable()
+    {
+        LevelManager.onNewLevelGeneration += ResetPosition;
+    }
 
     void OnTriggerEnter(Collider other)
     {
@@ -21,6 +27,12 @@ public class PlayerController : MonoBehaviour
             passiveMovement = other.GetComponent<Obstacle>().GetMovement();
         else if (other.tag == "Road Zone Obstacle")
             Die();
+        else if (other.tag == "Level End Trigger")
+        {
+            model.IncreaseScore();
+
+            if (onLevelEndReached != null) onLevelEndReached();
+        }
     }
 
     void OnTriggerExit(Collider other)
@@ -43,10 +55,19 @@ public class PlayerController : MonoBehaviour
         }
     }
 
+    void OnDisable()
+    {
+        LevelManager.onNewLevelGeneration -= ResetPosition;
+    }
+
     void Die()
     {
-        if (onDeath != null)
-            onDeath(model.score);
+        if (onDeath != null) onDeath(model.score);
+    }
+
+    void ResetPosition()
+    {
+        transform.position = Vector3.zero;
     }
 
     IEnumerator Move(Vector3 initialPosition, Vector3 direction)

@@ -12,10 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e6c7b4fdece3ceb41894233e136f8a82, type: 3}
   m_Name: Road Zone
   m_EditorClassIdentifier: 
-  minObstacleGenerationTime: 1.5
-  maxObstacleGenerationTime: 4
-  minObstacleSpeed: 3
-  maxObstacleSpeed: 6
+  minObstacleGenerationTime: 0.5
+  maxObstacleGenerationTime: 2.5
+  minObstacleSpeed: 5
+  maxObstacleSpeed: 8
   type: 0
   prefab: {fileID: 2263890039299480579, guid: 5eaebd3b838b43b4db8f5b03cbe036c9, type: 3}
   tilePrefabs:
