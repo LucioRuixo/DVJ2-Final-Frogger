@@ -14,8 +14,8 @@ public class PlayerController : MonoBehaviour
 
     Vector3 passiveMovement;
 
-    public static event Action<int> onDeath;
     public static event Action onLevelEndReached;
+    public static event Action onDeath;
 
     void OnEnable()
     {
@@ -33,7 +33,6 @@ public class PlayerController : MonoBehaviour
         else if (other.tag == "Level End Trigger")
         {
             active = false;
-            model.IncreaseScore();
 
             if (onLevelEndReached != null) onLevelEndReached();
         }
@@ -79,7 +78,7 @@ public class PlayerController : MonoBehaviour
 
     void Die()
     {
-        if (onDeath != null) onDeath(model.score);
+        if (onDeath != null) onDeath();
 
         Destroy(gameObject);
     }

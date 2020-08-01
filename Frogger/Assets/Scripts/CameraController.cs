@@ -17,4 +17,9 @@ public class CameraController : MonoBehaviour
         position.z += pivot.position.z;
         transform.position = position;
     }
+
+    public void SetPivot(Transform pivot)
+    {
+        this.pivot = pivot;
+    }
 }
