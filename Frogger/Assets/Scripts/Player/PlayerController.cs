@@ -6,8 +6,11 @@ public class PlayerController : MonoBehaviour
 {
     public PlayerModel model;
 
+    bool active = true;
     bool moving = false;
     bool onWaterZone = false;
+
+    float maxXValue = 5f;
 
     Vector3 passiveMovement;
 
@@ -29,6 +32,7 @@ public class PlayerController : MonoBehaviour
             Die();
         else if (other.tag == "Level End Trigger")
         {
+            active = false;
             model.IncreaseScore();
 
             if (onLevelEndReached != null) onLevelEndReached();
@@ -38,11 +42,18 @@ public class PlayerController : MonoBehaviour
     void OnTriggerExit(Collider other)
     {
         if (other.tag == "Water Zone Obstacle")
-            passiveMovement = Vector3.zero;
+        {
+            if (moving)
+                passiveMovement = Vector3.zero;
+            else
+                Die();
+        }
     }
 
     void Update()
     {
+        if (!active) return;
+
         if (!moving)
         {
             if (Input.GetButton("Vertical"))
@@ -53,6 +64,12 @@ public class PlayerController : MonoBehaviour
             if (passiveMovement != Vector3.zero)
                 transform.position += passiveMovement * Time.deltaTime;
         }
+
+        Vector3 clampedPosition = transform.position;
+        clampedPosition.x = Mathf.Clamp(clampedPosition.x, -maxXValue, maxXValue);
+        if (clampedPosition.z < 0f)
+            clampedPosition.z = 0f;
+        transform.position = clampedPosition;
     }
 
     void OnDisable()
@@ -63,11 +80,14 @@ public class PlayerController : MonoBehaviour
     void Die()
     {
         if (onDeath != null) onDeath(model.score);
+
+        Destroy(gameObject);
     }
 
     void ResetPosition()
     {
         transform.position = Vector3.zero;
+        active = true;
     }
 
     IEnumerator Move(Vector3 initialPosition, Vector3 direction)
@@ -75,6 +95,9 @@ public class PlayerController : MonoBehaviour
         moving = true;
 
         Vector3 finalPosition = initialPosition + direction;
+        finalPosition.x = Mathf.Clamp(finalPosition.x, -maxXValue, maxXValue);
+        if (finalPosition.z < 0f)
+            finalPosition.z = 0f;
 
         while (transform.position != finalPosition)
         {

@@ -11,9 +11,12 @@ public class LevelManager : MonoBehaviour
     }
 
     int currentLevel = 0;
+    int levelWidth = 32;
+    int lastZoneExtraLength = 10;
     int totalZoneAmount;
 
     float tileOffset = 0.5f;
+    float firstZoneZ = -1.5f;
     float initialZoneX;
     float initialZoneZ;
 
@@ -25,14 +28,12 @@ public class LevelManager : MonoBehaviour
     public List<GameObject> zones;
 
     [Header("Level settings")]
-    public int levelWidth;
-    public int dangerZoneAmount;
+    public int baseDangerZoneAmount;
     public int minSafeZoneLength;
     public int maxSafeZoneLength;
     public int minBaseDangerZoneLength;
     public int maxBaseDangerZoneLength;
 
-    public static event Action onLevelEndReached;
     public static event Action onNewLevelGeneration;
     public static event Action<int> onCurrentLevelUpdate;
 
@@ -46,9 +47,9 @@ public class LevelManager : MonoBehaviour
         initialZoneX = (levelWidth / 2 - tileOffset) * -1f;
         initialZoneZ = -tileOffset;
 
-        if (dangerZoneAmount < 1)
-            dangerZoneAmount = 1;
-        totalZoneAmount = dangerZoneAmount * 2 + 1;
+        if (baseDangerZoneAmount < 1)
+            baseDangerZoneAmount = 1;
+        totalZoneAmount = baseDangerZoneAmount * 2 + 1;
 
         ClampZoneValues(minSafeZoneLength, maxSafeZoneLength);
         ClampZoneValues(minBaseDangerZoneLength, maxBaseDangerZoneLength);
@@ -81,15 +82,30 @@ public class LevelManager : MonoBehaviour
         {
             if (i % 2 == 0)
             {
-                zoneLength = UnityEngine.Random.Range(minSafeZoneLength, maxSafeZoneLength + 1) + currentLevel;
+                zoneLength = UnityEngine.Random.Range(minSafeZoneLength, maxSafeZoneLength + 1);
+
+                float initialZ;
+                if (i == 0)
+                {
+                    initialZ = firstZoneZ;
+                    zoneLength++;
+                    currentTotalLength--;
+                }
+                else
+                {
+                    initialZ = initialZoneZ + currentTotalLength;
+
+                    if (i == totalZoneAmount - 1)
+                        zoneLength += lastZoneExtraLength;
+                }
 
                 zones.Add(Instantiate(safeZonePrefab, transform));
                 SafeZone newZone = zones[zones.Count - 1].GetComponent<SafeZone>();
-                if (newZone) newZone.Initialize(initialZoneX, initialZoneZ + currentTotalLength, levelWidth, zoneLength);
+                if (newZone) newZone.Initialize(initialZoneX, initialZ, levelWidth, zoneLength);
             }
             else
             {
-                zoneLength = UnityEngine.Random.Range(minBaseDangerZoneLength, maxBaseDangerZoneLength + 1);
+                zoneLength = UnityEngine.Random.Range(minBaseDangerZoneLength, maxBaseDangerZoneLength + 1) + currentLevel;
 
                 DangerZoneSO newZoneSO = dangerZoneSOs[UnityEngine.Random.Range(0, dangerZoneSOs.Count)];
                 zones.Add(Instantiate(newZoneSO.prefab, transform));

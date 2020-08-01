@@ -12,9 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e6c7b4fdece3ceb41894233e136f8a82, type: 3}
   m_Name: Water Zone
   m_EditorClassIdentifier: 
-  minObstacleGenerationTime: 1.5
-  maxObstacleGenerationTime: 4
-  minObstacleSpeed: 1
+  minObstacleGenerationTime: 1
+  maxObstacleGenerationTime: 2.5
+  minObstacleSpeed: 1.5
   maxObstacleSpeed: 4
   type: 1
   prefab: {fileID: 9075368706931917491, guid: dbaa3b1f6de84ba4786477cef0b40cec, type: 3}

@@ -7,13 +7,14 @@ public class CameraController : MonoBehaviour
 
     public Transform pivot;
 
-    void Start()
-    {
-        transform.rotation = Quaternion.Euler(rotation);
-    }
-
     void Update()
     {
-        transform.position = pivot.position + offset;
+        if (!pivot) return;
+
+        transform.rotation = Quaternion.Euler(rotation);
+
+        Vector3 position = offset;
+        position.z += pivot.position.z;
+        transform.position = position;
     }
 }
