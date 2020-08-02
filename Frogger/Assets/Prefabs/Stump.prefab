@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 5174104513111291227}
   - component: {fileID: -7702244482770826147}
   m_Layer: 0
-  m_Name: Stump 1
+  m_Name: Stump
   m_TagString: Water Zone Obstacle
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -73,7 +73,7 @@ PrefabInstance:
     - target: {fileID: -4216859302048453862, guid: 31f55cb3686b4a9469a4d23e8fd00768,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: -0.07
       objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: 31f55cb3686b4a9469a4d23e8fd00768,
         type: 3}

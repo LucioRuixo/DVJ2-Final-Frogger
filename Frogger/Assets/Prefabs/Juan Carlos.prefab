@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 935124943038571648}
   - component: {fileID: 935124943038571654}
   - component: {fileID: 935124943038571653}
+  - component: {fileID: 4068795753829841738}
   m_Layer: 0
   m_Name: Juan Carlos
   m_TagString: Untagged
@@ -76,10 +77,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 25d8b2be00660cf4e8c08be026c50206, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  scoreIncrement: 100
-  lives: 3
-  score: 0
   movementSpeed: 5
+  rotationSpeed: 10
 --- !u!114 &935124943038571653
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -93,6 +92,20 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   model: {fileID: 935124943038571654}
+  view: {fileID: 4068795753829841738}
+--- !u!114 &4068795753829841738
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 935124943038571652}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b09d805e9e9100e4d9a78d36b3fd5253, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  animator: {fileID: 935124941742829307}
 --- !u!1001 &935124941750180763
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -160,6 +173,10 @@ PrefabInstance:
       propertyPath: m_LocalScale.z
       value: 0.167
       objectReference: {fileID: 0}
+    - target: {fileID: 9500000, guid: 2db7e17401e08b94697ecd7acce75ab1, type: 3}
+      propertyPath: m_Controller
+      value: 
+      objectReference: {fileID: 9100000, guid: d62d406c1d7616c43bb3a1bef47facb4, type: 2}
     - target: {fileID: 13700000, guid: 2db7e17401e08b94697ecd7acce75ab1, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
@@ -169,6 +186,12 @@ PrefabInstance:
 --- !u!4 &935124941750567195 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 400000, guid: 2db7e17401e08b94697ecd7acce75ab1,
+    type: 3}
+  m_PrefabInstance: {fileID: 935124941750180763}
+  m_PrefabAsset: {fileID: 0}
+--- !u!95 &935124941742829307 stripped
+Animator:
+  m_CorrespondingSourceObject: {fileID: 9500000, guid: 2db7e17401e08b94697ecd7acce75ab1,
     type: 3}
   m_PrefabInstance: {fileID: 935124941750180763}
   m_PrefabAsset: {fileID: 0}
